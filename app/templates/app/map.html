@@ -1,0 +1,565 @@
+﻿{% extends "app/layout.html" %}
+{% block content%}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% load staticfiles %}
+   <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> //for mobile device scaling
+
+   <title>Display a map</title>
+
+   //<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js'></script>
+    <script src="../../static/app/scripts/push.js"></script>
+    <script src="../../static/app/scripts/getTheLocation.js"></script>
+    <script src="../../static/app/scripts/app.js"></script>
+   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet' />
+
+   <style>
+   body { margin:0px; padding:0px; }
+   #map { position:absolute; top:150px; bottom:50px; width:75%; }
+   </style>
+
+</head>
+
+<body onload=" appTest(); getLocation();"> <script>//This checks the push notification permission</script>
+
+    //style the map toggle buttons
+     
+<style>
+
+            #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+            top: 150px;
+            right: 10px;
+            border-radius: 3px;
+            width: 120px;
+            border: 1px solid rgba(0,0,0,0.4);
+            font-family: 'Open Sans', sans-serif;
+            }
+ 
+            #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.25);
+            text-align: center;
+            }
+ 
+            #menu a:last-child {
+            border: none;
+            }
+ 
+            #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+            }
+ 
+            #menu a.active {
+            background-color: #3887be;
+            color: #ffffff;
+            }
+ 
+            #menu a.active:hover {
+            background: #3074a4;
+            }
+            </style>
+
+    <nav id="menu"></nav>
+    <div id='map'></div>
+
+<script>
+
+ 
+    //mapbox api
+     mapboxgl.accessToken = 'pk.eyJ1IjoibHVrZWdpZmZlbiIsImEiOiJjanYxaHF4YWkwc2pnM3prYzZ1NnBkZXQzIn0.TXOk8ItQSObapl4O0ebAqg';
+
+
+    // initialize the map
+        var map = new mapboxgl.Map({ 
+            container: 'map',
+            maxZoom: 19,
+            minZoom: 0,
+            zoom: 16.5,
+            center: [-119.82026, 36.75251],
+            style: 'mapbox://styles/mapbox/streets-v11'
+
+        });
+
+    map.on("load", function () {
+       //this is the geojson source
+	map.addSource("exhibitCoordinates", {
+		"type": "geojson",
+		"data": {
+			"type": "FeatureCollection",
+			"features": [
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [-119.8226407, 36.7524107]},
+
+                            "properties": {
+                                    "title": "Ticket Booth",
+                                    "icon": "marker"}
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [-119.82151, 36.7528189]},
+
+                            "properties": {
+                                     "title": "Safari Cafe",
+                                     "icon": "restaurant"}
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [-119.823169, 36.7524539]},
+
+                            "properties": {
+                                    "title": "Front-Entrance Restroom",
+                                    "icon": "toilet"}
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                    "type": "Point",
+                                    "coordinates": [-119.8231406, 36.752662]},
+
+                            "properties": {
+                                    "title": "Red Wolf",
+                                    "icon": "zoo"}
+
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                   "type": "Point",
+                                   "coordinates": [-119.8227744, 36.7529179]},
+
+                            "properties": {
+                                   "title": "Reptile House",
+                                   "icon": "zoo"}
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                                   "type": "Point",
+                                  "coordinates": [-119.8228782, 36.7526754]},
+
+                            "properties": {
+                                   "title": "Galapagos Tortoise",
+                                  "icon": "zoo"}
+
+                          },
+
+                          {
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8229255, 36.7522759] 
+                            },
+                            "properties": {
+                            "title": "Safari Trading Company",
+                            "icon": "marker"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8229244, 36.7522462]
+                            },
+                            "properties": {
+                            "title": "Exit",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8227674, 36.752183]
+                            },
+                            "properties": {
+                            "title": "Australion Aviary",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8220076, 36.7528309]
+                            },
+                            "properties": {
+                            "title": "Sea Lion Cove",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8214763, 36.7527492]
+                            },
+                            "properties": {
+                            "title": "Red Ruffled Lemur",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8213053, 36.752968]
+                            },
+                            "properties": {
+                            "title": "Capybara",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.821602, 36.7528058]
+                            },
+                            "properties": {
+                            "title": "Komodo Dragon",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.82151, 36.7528189]
+                            }, 
+                            "properties": {
+                            "title": "Safari Cafe",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8207138, 36.7528697]
+                            },
+                            "properties": {
+                            "title": "Wilderness Falls",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8209283, 36.75289697]
+                            },
+                            "properties": {
+                            "title": "Bird Show",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.820492, 36.7529073]
+                            },
+                            "properties": {
+                            "title": "Dino Dig",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8205784, 36.752609]
+                            },
+                            "properties": {
+                            "title": "Cafe Restrooms",
+                            "icon": "toilet"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8205784, 36.752609]
+                            },
+                            "properties": {
+                            "title": "Africa",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8198206, 36.7523984]
+                            },
+                            "properties": {
+                            "title": "Cheetah",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8195725, 36.7522717]
+                            },
+                            "properties": {
+                            "title": "Main Savanna",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.818767, 36.7524394]
+                            },
+                            "properties": {
+                            "title": "Twiga Trail Restroom",
+                            "icon": "toilet"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8182843, 36.7524394]
+                            },
+                            "properties": {
+                            "title": "Giraffe Feeding Station",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8195315, 36.7519995]
+                            },
+                            "properties": {
+                            "title": "Kopje Lodge",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8194028, 36.7522211]
+                            },
+                            "properties": {
+                            "title": "Kopje Restroom",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8197147, 36.7515332]
+                            },
+                            "properties": {
+                            "title": "Meerkat",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8195255, 36.751343]
+                            },
+                            "properties": {
+                            "title": "Warthog",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8191874, 36.751208]
+                            },
+                            "properties": {
+                            "title": "Tembo Trail Restroom",
+                            "icon": "toilet"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8173166, 36.7513446]
+                            },
+                            "properties": {
+                            "title": "African Elephant",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8196382, 36.751776]
+                            },
+                            "properties": {
+                            "title": "Kopje Lodge Gift Shop",
+                            "icon": "landmark"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8213507, 36.7527785]
+                            },
+                            "properties": {
+                            "title": "Aoudad",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8209761, 36.7520475]
+                            },
+                            "properties": {
+                            "title": "African River Otter",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8208718, 36.7520673]
+                            },
+                            "properties": {
+                            "title": "Flamingo",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8208785, 36.7520156]
+                            },
+                            "properties": {
+                            "title": "Tropical Birdhouse",
+                            "icon": "zoo"
+                            }
+                              },{
+                            "type": "Feature",
+                            "geometry": {
+                            "type": "Point",
+                            "coordinates": [-119.8207602, 36.7523523]
+                            },
+                            "properties": {
+                            "title": "Africa",
+                            "icon": "zoo"
+                            }
+                                        }
+                          ] //closes out the features
+} //closes the data
+}); //closes out the source
+
+        //this is the geojson layer
+		map.addLayer({
+			"id": "points",
+			"type": "symbol",
+			"source": "exhibitCoordinates",
+			"layout":
+                {
+				"icon-image": "{icon}-15",
+				"text-field": "{title}",
+				"text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+				"text-offset": [0, 0.6],
+				"text-anchor": "top"
+            },
+
+		
+});
+        //this is the animated map source
+  map.addSource("BaseMap", {
+                "type": "image",
+                "url": "https://i.ibb.co/2NhNLc4/zoomap.png",
+                "coordinates":  [
+                        [-119.8236, 36.75447], 
+                        [-119.81601, 36.75446],
+                        [-119.816, 36.7505],
+                        [-119.82345, 36.7505]
+                        ]
+            });
+    // this sets the base map image as a layer
+            map.addLayer({
+                "id": "BaseMap",
+                "source": "BaseMap",
+                'layout': {
+                    'visibility': 'visible'
+                    },
+                "type": "raster",
+                "paint": {
+                "raster-opacity": 1
+                }
+            });
+
+        //this adds the map type source, I dont know if this will work
+         map.addSource("BaseMap", {
+             "type": "vector",
+
+               
+            });
+ 
+});
+
+    //this will allow the user to filter between layers
+    var toggleableLayerIds = [ 'BaseMap', 'points' ];
+ 
+            for (var i = 0; i < toggleableLayerIds.length; i++) {
+            var id = toggleableLayerIds[i];
+ 
+            var link = document.createElement('a');
+            link.href = '#';
+            link.className = 'active';
+            link.textContent = id;
+ 
+            link.onclick = function (e) {
+            var clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+ 
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+ 
+            if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+            } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+            };
+ 
+            var layers = document.getElementById('menu');
+            layers.appendChild(link);
+            }
+
+          // Add geolocate control to the map.
+            map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+            enableHighAccuracy: true
+            },
+            trackUserLocation: true
+                   }));
+       // Add zoom and rotation controls to the map.
+       map.addControl(new mapboxgl.NavigationControl());
+
+       
+</script>
+ 
+
+   </body>
+</html>
+{% endblock %}

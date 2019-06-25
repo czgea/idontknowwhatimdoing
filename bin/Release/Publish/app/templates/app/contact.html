@@ -1,0 +1,34 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     {% load staticfiles %}
+
+   <script src="../../static/app/scripts/push.js"></script>
+   <script src="../../static/app/scripts/getTheLocation.js"></script>
+    <script src="../../static/app/scripts/app.js"></script>
+   <meta charset="utf-8" />
+   <title></title>
+</head>
+<body onload=" appTest(); getLocation(); "></body>
+
+<h2>Contact Information</h2>
+<h3>Fresno Chaffee Zoo</h3>
+
+<address>
+    Luke Giffen<br />
+    894 West Belmont Avenue<br />
+    <abbr title="Phone">P:</abbr>
+    559.681.0216
+</address>
+
+<address>
+    <strong>Support:</strong>   <a href="mailto:lgiffen@fresnochaffeezoo.org">lgiffen@fresnochaffeezoo.org</a><br />
+    <strong>Marketing:</strong> <a href="mailto:Marketing@fresnochaffeezoo.org">Marketing@fresnochaffeezoo.org</a>
+</address>
+</html>
+{% endblock %}

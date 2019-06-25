@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    {% block title %}Thanks{% endblock %}
+ 
+{% block body %}
+<h1>Thanks for your response.</h1>
+<p><a href="{% url 'home' %}">Would you like to return to the home page?</a></p>
+{% endblock %}
+</body>
+</html>

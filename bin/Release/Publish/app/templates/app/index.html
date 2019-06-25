@@ -1,0 +1,59 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <script>//for mobile device scaling</script>
+    {% load staticfiles %}
+    <script src="../../static/app/scripts/push.js"></script>
+    <script src="../../static/app/scripts/getTheLocation.js"></script>
+     <script src="../../static/app/scripts/app.js"></script>
+
+   <title>Home</title>
+</head>
+
+<body onload="requestPermissions(); appTest(); getLocation(); ">
+
+ <script>//This will request push notification permission on the home page
+
+    function requestPermissions() {
+       Push.Permission.request();
+    }
+    </script>
+
+
+
+<div class="jumbotron">
+    <h1>Chaffee Zoo Guest Experience</h1>
+    <p class="lead">The Fresno Chaffee Zoo Guest Experience App allows better communication between the Zoo and its guests</p>
+    <p><a href="https://www.fresnochaffeezoo.org/" class="btn btn-primary btn-large">Go to Chaffee Zoo Main Site &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Interactive Map</h2>
+        <p>
+            Our interactive map will help you get around the zoo easier. Please allow location services.
+        </p>
+        <p><a class="btn btn-default" href="{% url 'map' %}">To the map.</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Show Times</h2>
+        <p>We'll notify you before Keeper chats starts. Please allow notification services.</p>
+        <p><a class="btn btn-default" href="{% url 'showTimes' %}">View Keeper Chat Times.</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Feedback Form</h2>
+        <p>Do you have any recommendations or concerns? We want to hear from you! Tell us about your visit. </p>
+        <p><a class="btn btn-default" href="{% url 'feedback' %}">Fill out the form.</a></p>
+    </div>
+</div>
+
+
+</body>
+</html>
+{% endblock %}
